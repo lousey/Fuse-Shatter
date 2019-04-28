@@ -1,0 +1,1 @@
+(function(){$(document).ready(function(){$("#select-files").click(function(){$("#image_").click()}),$("#image_").change(function(){for(var e="",n=$('input[type="file"]')[0].files,i=0;n.length>i;i++)e+=n[i].name+"; ";$("#filenames").val(e)})})})();

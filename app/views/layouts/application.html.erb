@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fuse/Shatter</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div id="navigation" class="clearfix">
+  <h1><%= link_to "Fuse/Shatter", root_url %></h1>
+  <ul>
+    <% if user_signed_in? %>
+    <li>
+      <%= link_to('Edit account', edit_user_registration_path) %> |&nbsp; 
+    </li> 
+    <li>
+      <%= link_to('Sign out', destroy_user_session_path, :method => :delete) %>        
+    </li>
+    <% else %>
+    <li>
+      <%= link_to('Sign in', new_user_session_path)  %> |&nbsp;
+    </li>
+    <li>
+      <%= link_to('Register', new_user_registration_path)  %>
+    </li>
+  </ul>
+<% end %>
+</div>
+<% if !notice.blank? %><p class="notice"><%= notice %></p><% end %>
+<% if !alert.blank? %><p class="alert"><%= alert %></p><% end %>
+<%= yield %>
+<%= javascript_include_tag "application" %>
+<%= yield(:javascripts) %>
+</body>
+</html>

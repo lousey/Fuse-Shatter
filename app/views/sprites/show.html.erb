@@ -1,0 +1,80 @@
+<h2>
+  <%= @sprite.name %>
+</h2>
+
+<% if @sprite.images.size > 0 %>
+<div class="row">
+  <strong>
+  <div class="span1">Thumbnail</div>
+  <div class="span4">Filename</div>
+  <div class="span3">CSS ID</div>
+  <div class="span1">Padding</div>
+  <div class="span3">&nbsp;</div>
+  </strong>
+</div>
+<br/>
+<% end %>
+<% @sprite.images.each do |image| %>
+<div class="row sprite_row">
+  <div class="span1"><%= image_tag(image.file.thumb.url) %></div>
+  <div class="span4"><%= link_to image.file.path.split("/").last, sprite_image_path(@sprite, image) %></div>
+    <%= form_for image, :url => sprite_image_path(@sprite, image), :method => :put do |f| %>
+	  <div class="span3"><%= f.text_field :css_id %></div>
+	  <div class="span1"><%= f.text_field :padding, :class => "padding_text_field"  %></div>
+	  <div class="update_image_column">	  
+	  <%= f.submit "Update", :class => "btn update_image_btn" %>
+	  </div>
+    <% end %>
+    <div class="delete_image_column">
+  <%= button_to "Delete", sprite_image_path(@sprite, image), :method=>:delete, :class => "btn delete_image_btn" %>
+  </div>
+</div>
+<% end %>
+
+
+<%= form_tag(upload_sprite_path(@sprite), {:multipart => true, :method => :put}) do %>
+  <div class="browse-button"><%= file_field_tag 'image[]', :multiple => true %></div>
+  <div class="row">
+    <div class="span3"><%= text_field_tag("filenames", nil, :class => "filenames_text_field", :readonly => true ) %></div>
+    <div class="span9">
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="btn" id="select-files">Select files</span>
+      &nbsp;&nbsp;&nbsp;&nbsp;<%= submit_tag "Upload files", :class => "btn" %>
+    </div>
+  </div>
+<% end %>
+
+<h2>When you're ready, hit generate</h2>
+<%= form_tag(generate_sprite_path(@sprite), {:multipart => true, :method => :post }) do %>
+<%= submit_tag "Generate sprite", :class => "btn" %>
+<% end %>
+
+
+<% if !@positions.blank? %>
+<br/>
+<h2>Generated sprite</h2>
+<% if @sprite.images.size > 0 %>
+<%= image_tag("/generated/" + @sprite.id.to_s + ".png", :id => "sprite") %>
+<p><em>Right-click and save image</em></p>
+<% end %>
+
+<br/><br/>
+<h2>CSS code</h2>
+<pre>
+<% @sprite.images.each_with_index do |image, index| %>
+#<%= image.css_id %> {
+  background-position: -<%= @positions[index][0] - image.padding %>px -<%= @positions[index][1] - image.padding %>px;
+  width: <%= image.geometry[0] + image.padding * 2 %>px;
+  height: <%= image.geometry[1] + image.padding * 2 %>px;
+}
+
+<% end %>
+</pre>
+<% end %>
+
+<br/><br/><br/>
+
+<%= link_to 'Back', sprites_path %>
+
+<% content_for(:javascripts) do %>
+<%= javascript_include_tag "show_sprite" %>
+<% end %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  order: 1
+  css_id: MyString
+  padding: 1
+  file: MyString
+
+two:
+  order: 1
+  css_id: MyString
+  padding: 1
+  file: MyString

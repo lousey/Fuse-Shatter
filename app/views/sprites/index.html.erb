@@ -1,0 +1,49 @@
+<%= render 'subhead' %>
+
+
+<br/>
+<div class="row">
+<div class="span8">
+<div id="sprites_container">
+<% if user_signed_in? %>
+
+<h1>My Sprites</h1>
+
+
+<% @sprites.each do |sprite| %>
+<div class="row">
+  <div class="span4"><%= link_to sprite.name, sprite %></div>
+  <div class="edit_name_column">
+    <%= link_to 'Edit name', edit_sprite_path(sprite), :class => "btn" %>
+  </div>
+  <div class="span2">
+    <%= button_to "Delete", sprite, :confirm => 'Are you sure?', :method=>:delete, :class => "btn" %>
+  </div>
+</div>
+<% end %>
+
+
+
+<%= link_to 'Add a new sprite', new_sprite_path, :class => "btn" %>
+<br/><br/>
+<% end %>
+<% if !user_signed_in? %>
+<br/>
+Please sign in or register to use Fuse/Shatter.
+<br/><br/><br/><br/><br/><br/>
+<% end %>
+</div>
+</div>
+<div class="span4">
+  <div id="info_container">  
+    <h3>Why sprite images?</h3>
+    <p>Combining multiple images into one large sprite reduces HTTP requests,
+      which can act as a bottleneck on page load times.</p>
+  </div>
+</div>
+</div>
+
+<br/><br/>
+
+
+
